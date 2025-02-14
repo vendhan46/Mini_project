@@ -1,0 +1,102 @@
+.emotion{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    gap: 80px;
+    padding-top: 80px;
+    padding-bottom: 83px;
+    margin-left: 100px;
+    margin-right: 100px;
+    border-radius: 25px;
+    background-image: linear-gradient(to bottom,#025738,#121212);
+}
+.emotion .head{
+    color: white;
+    font-size: 18px;
+    font-weight: 300; 
+    display:flex;
+    flex-direction: column;
+    gap:30px;
+}
+.emotion .head .emo{
+    color:#21d760;
+    font-size: 36px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.emotion .imgg{
+    border: 2px solid black;
+    border-radius: 25px;
+    width:480px;
+    height:360px;
+}
+.emotion .but{
+    display:flex;
+    flex-direction: column;
+    gap:30px;
+    color: white
+    
+}
+.emotion .but{
+    align-items: center;
+}
+
+.emotion .but button{
+    background-image: linear-gradient(to bottom,#121212,#242424);
+    font-size: 16px;
+    color:white;
+    
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    }
+.emotion.error-message {
+        color: red; /* Change color as needed */
+        font-weight: bold;
+        margin-top: 10px;
+      }
+@media(max-width:750px){
+    .emotion{
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding-top: 40px;
+        padding-bottom: 42px;
+        margin-left: 30px;
+        margin-right: 30px;
+        border-radius: 25px;
+    }
+    .emotion .head{
+        font-size: 16px;
+        font-weight: 300; 
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        
+    }
+    .emotion .head .emo{
+        font-size: 32px;
+        
+    }
+    .emotion .imgg{
+        width: 384px;
+        height: 288px;
+    }
+    .emotion .but{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+    .emotion .but button{
+        font-size: 14px;
+        border-radius: 25px;
+        padding: 5px 10px;
+    }
+    .emotion .but p{
+        display: none;
+    }
+
+}

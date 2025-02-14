@@ -1,0 +1,65 @@
+.load{
+    color: white;
+    font-size: 20px;
+}
+
+
+
+.overall{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    color: white;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    padding-left:50px;
+    padding-right:50px;
+    margin-left: 100px;
+    margin-right: 100px;
+    border-radius: 25px;
+    background-image: linear-gradient(to bottom,#025738,#121212);
+    
+}
+.overall .player{        
+        width: 1120px;
+}
+.overall .continue{
+    display:flex;
+    flex-direction: column;
+    gap:30px;
+    
+}
+.overall .continue .but{
+    display:flex;
+    flex-direction: column;
+    gap:30px;
+    font-size: 50px;
+}
+.overall .continue .but button{
+    background-image: linear-gradient(to bottom,#121212,#242424);
+        font-size: 16px;
+        color:white;
+       
+        padding: 10px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+@media(max-width:750px){
+        .overall{
+            display: flex;
+            flex-direction: column;
+            gap:20px;
+            padding-top: 30px;
+        padding-bottom: 30px;
+        padding-left:30px;
+        padding-right:30px;
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+        .overall .player{
+            width: 360px;
+        }
+    }
