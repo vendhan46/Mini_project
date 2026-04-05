@@ -1,35 +1,78 @@
-import React, { useRef } from 'react';
-import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './WebCapture.css'
-import { useState } from 'react';
+import api from '../../utils/api';
+import { trackHistory } from '../../utils/history';
 const Webcapture = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const navigate = useNavigate();
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
 
-  const startCamera = () => {
-    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-      videoRef.current.srcObject = stream;
-    });
+  const stopCamera = () => {
+    const stream = videoRef.current?.srcObject;
+
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      stopCamera();
+    };
+  }, []);
+
+  const startCamera = async () => {
+    setError(null);
+    stopCamera();
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch {
+      setError('Unable to access camera. Please check camera permission and try again.');
+    }
   };
 
   const captureImage = async () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
+
+    if (!video?.srcObject) {
+      setError('Please start the camera before capturing.');
+      return;
+    }
+
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+    // Turn off webcam immediately after a frame is captured.
+    stopCamera();
+
     canvas.toBlob(async (blob) => {
+      if (!blob) {
+        setError('Unable to capture image. Please try again.');
+        return;
+      }
+
       const formData = new FormData();
       formData.append('image', blob);
 
       try {
-        const response = await axios.post('http://127.0.0.1:5000/detect_emotion', formData, {
+        const response = await api.post('/detect_emotion', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
+        });
+
+        await trackHistory({
+          detectedEmotion: response.data.emotion,
+          finalEmotion: response.data.emotion,
+          action: 'emotion_detected',
         });
 
         // Navigate to the emotion detection page with response data
@@ -39,7 +82,7 @@ const Webcapture = () => {
         
         // If the error response is 400, set a specific error message for "Face not detected"
         if (error.response && error.response.status === 400) {
-          navigate('/emotion-detection', { state: {  error: response.error } });
+          setError(error.response.data.error || 'No face detected. Please try again.');
         } else {
           // For any other errors, you can show a generic message
           setError('An error occurred. Please try again.');
@@ -52,7 +95,9 @@ const Webcapture = () => {
     <div className='camera'>
 
       <video ref={videoRef} autoPlay></video>
-     
+      
+      {error && <p className="error-message" style={{color: 'red', textAlign: 'center'}}>{error}</p>}
+
       <div className='but'>
       <button onClick={startCamera}>Start Camera</button>
       <button onClick={captureImage}>Capture Image</button>

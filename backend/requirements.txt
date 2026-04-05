@@ -4,5 +4,8 @@ pandas
 opencv-python
 scikit-learn
 flask
+flask-cors
+python-dotenv
+requests
 openpyxl
 pytube
